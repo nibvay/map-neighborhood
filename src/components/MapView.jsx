@@ -7,7 +7,7 @@ import { GOOGLE_MAP_AUTH_KEY } from '../assets/license'
 // ref. https://react-google-maps-api-docs.netlify.app/
 const LoadScriptLibraries = ["places"];
 
-function MapView() {
+function MapView({ locationData, radius = 500 }) {
   const [currentLocation, setCurrentLocation] = useState({ lat: 25.0261704, lng: 121.5253597 });
   const autocompleteRef = useRef();
 
@@ -42,7 +42,7 @@ function MapView() {
         >
           <input
             type="text"
-            placeholder="Customized your placeholder"
+            placeholder="Search some position"
             style={{
               boxSizing: `border-box`,
               border: `1px solid transparent`,
@@ -60,70 +60,32 @@ function MapView() {
             }}
           />
         </Autocomplete>
-        <Marker position={{ lat: 25.026549, lng: 121.527579 }} />
-        <Marker position={{ lat: 25.0268483, lng: 121.5257582 }} />
-        <Circle
-          center={{ lat: 25.026549, lng: 121.527579 }}
-          options={{
-            radius: 10,
-            strokeOpacity: 0,
-            fillColor: '#f00',
-            fillOpacity: 0.35,
-          }}
-        />
-         <Circle
-          center={{ lat: 25.0268483, lng: 121.5257582 }}
-          options={{
-            radius: 10,
-            strokeOpacity: 0,
-            fillColor: '#f00',
-            fillOpacity: 0.35,
-          }}
-        />
+        <Marker position={currentLocation} />
+        {
+          locationData?.length > 0 && locationData.map(({ name, lat, lng }) => {
+            return (
+              <section key={name}>
+                <Marker
+                  position={{ lat, lng }}
+                  label={name}
+                />
+                <Circle
+                  center={{ lat, lng }}
+                  options={{
+                    radius,
+                    strokeOpacity: 0,
+                    fillColor: '#f00',
+                    fillOpacity: 0.25,
+                  }}
+                />
+              </section>
+            )
+          })
+
+        }
       </GoogleMap>
     </LoadScript>
   );
 }
 
 export default MapView;
-
-
-    // <input ref={searchValueRef} type="text" onChange={handleSearchValue} />
-    // <div style={{ height: '100vh', width: '100%' }}>
-    //   <GoogleMapReact
-    //     bootstrapURLKeys={{ key: KEY }}
-    //     defaultCenter={defaultProps.center}
-    //     defaultZoom={defaultProps.zoom}
-    //     onGoogleApiLoaded={({ map, maps }) => {
-    //       return [
-    //         new maps.Circle({
-    //           center: { lat: 25.026549, lng: 121.527579 },
-    //           radius: 10,
-    //           strokeOpacity: 0,
-    //           fillColor: '#f00',
-    //           fillOpacity: 0.35,
-    //           map: map
-    //         }),
-    //         new maps.Circle({
-    //           center: { lat: 25.0268483, lng: 121.5257582 },
-    //           radius: 10,
-    //           strokeOpacity: 0,
-    //           fillColor: '#f00',
-    //           fillOpacity: 0.35,
-    //           map: map
-    //         })
-    //       ]
-    //     }}
-    //   >
-    //     <AnyReactComponent
-    //       lat={25.026549}
-    //       lng={121.527579}
-    //       text="test A"
-    //     />
-    //     <AnyReactComponent
-    //       lat={25.0268483}
-    //       lng={121.5257582}
-    //       text="test B"
-    //     />
-    //   </GoogleMapReact>
-    // </div>
