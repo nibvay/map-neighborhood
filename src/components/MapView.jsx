@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react';
 import { GoogleMap, LoadScript, Marker, Circle, Autocomplete } from '@react-google-maps/api';
-import { GOOGLE_MAP_AUTH_KEY } from '../assets/license'
+import { GOOGLE_MAP_AUTH_KEY } from '../assets/license';
 
 // ref. https://www.oxxostudio.tw/articles/201802/google-maps-12-rect-circle.html
 // ref. https://zh-tw.coderbridge.com/series/a98833b7bf4d43d38c7d541cf4cbe1b1/posts/f7b42bbec1ea4e1c94764d2bc2f9085b
 // ref. https://react-google-maps-api-docs.netlify.app/
-const LoadScriptLibraries = ["places"];
+const LoadScriptLibraries = ['places'];
 
 function MapView({ locationData, radius = 500 }) {
   const [currentLocation, setCurrentLocation] = useState({ lat: 25.0261704, lng: 121.5253597 });
@@ -18,29 +18,18 @@ function MapView({ locationData, radius = 500 }) {
       setCurrentLocation({
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
-      })
-    };
-  }
+      });
+    }
+  };
 
   const onLoad = (instance) => {
     autocompleteRef.current = instance;
-  }
+  };
 
   return (
-    <LoadScript
-      googleMapsApiKey={GOOGLE_MAP_AUTH_KEY}
-      libraries={LoadScriptLibraries}
-    >
-      <GoogleMap
-        mapContainerStyle={{ height: '90vh', width: '100%' }}
-        center={currentLocation}
-        zoom={17}
-      >
-        <Autocomplete
-          onLoad={onLoad}
-          ref={autocompleteRef}
-          onPlaceChanged={onPlaceChanged}
-        >
+    <LoadScript googleMapsApiKey={GOOGLE_MAP_AUTH_KEY} libraries={LoadScriptLibraries}>
+      <GoogleMap mapContainerStyle={{ height: '90vh', width: '100%' }} center={currentLocation} zoom={17}>
+        <Autocomplete onLoad={onLoad} ref={autocompleteRef} onPlaceChanged={onPlaceChanged}>
           <input
             type="text"
             placeholder="Search some position"
@@ -55,15 +44,15 @@ function MapView({ locationData, radius = 500 }) {
               fontSize: `14px`,
               outline: `none`,
               textOverflow: `ellipses`,
-              position: "absolute",
-              left: "50%",
-              marginLeft: "-120px"
+              position: 'absolute',
+              left: '50%',
+              marginLeft: '-120px',
             }}
           />
         </Autocomplete>
         <Marker position={currentLocation} />
-        {
-          locationData?.length > 0 && locationData.map(({ name, lat, lng }) => {
+        {locationData?.length > 0 &&
+          locationData.map(({ name, lat, lng }) => {
             return (
               <section key={name}>
                 <Marker
@@ -85,10 +74,8 @@ function MapView({ locationData, radius = 500 }) {
                   }}
                 />
               </section>
-            )
-          })
-
-        }
+            );
+          })}
       </GoogleMap>
     </LoadScript>
   );
