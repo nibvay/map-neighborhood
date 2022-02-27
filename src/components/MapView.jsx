@@ -12,8 +12,9 @@ function MapView({ locationData, radius = 500 }) {
   const autocompleteRef = useRef();
 
   const onPlaceChanged = () => {
-    if (autocompleteRef.current) {
-      const place = autocompleteRef.current.getPlace();
+    const autocomplete = autocompleteRef.current;
+    if (autocomplete) {
+      const place = autocomplete.getPlace();
       setCurrentLocation({
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
@@ -67,14 +68,19 @@ function MapView({ locationData, radius = 500 }) {
               <section key={name}>
                 <Marker
                   position={{ lat, lng }}
-                  label={name}
+                  label={{
+                    className: 'siteName',
+                    text: name,
+                    color: '#0044ff',
+                    fontWeight: '600',
+                  }}
                 />
                 <Circle
                   center={{ lat, lng }}
                   options={{
                     radius,
                     strokeOpacity: 0,
-                    fillColor: '#f00',
+                    fillColor: '#ff3300',
                     fillOpacity: 0.25,
                   }}
                 />
