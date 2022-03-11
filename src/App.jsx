@@ -1,6 +1,22 @@
 import { useState } from 'react';
 import './App.css';
 import MapView from './components/MapView';
+import styled from 'styled-components';
+
+const AppStyled = styled('div')`
+  h2 {
+    color: green;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    p {
+      margin-left: 0.5rem;
+    }
+  }
+`;
 
 function csvToJson(originData, delimiter = ',') {
   const data = originData.replace(/\r/gm, '');
@@ -32,18 +48,18 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h2 style={{ color: 'green' }}>Find your neighborhood</h2>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-        <p style={{ marginLeft: '0.5rem' }}>1. Upload location csv file:</p>
+    <AppStyled>
+      <h2>Find your neighborhood</h2>
+      <div className="step">
+        <p>1. Upload location csv file:</p>
         <input type="file" accept=".csv" placeholder="Please upload csv file" onChange={handleFile} />
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-        <p style={{ marginLeft: '0.5rem' }}>2. Set circle radius:</p>
+      <div className="step">
+        <p>2. Set circle radius:</p>
         <input type="number" onChange={handleRadius} />
       </div>
       <MapView locationData={locationData} radius={radius} />
-    </div>
+    </AppStyled>
   );
 }
 
